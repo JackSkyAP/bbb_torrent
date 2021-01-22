@@ -3,10 +3,10 @@
 
 # Changhua County, # https://cloud.google.com/compute/docs/regions-zones?hl=zh-tw
 # HongKong ==> asia-east2-a, Singapore ==> asia-southeast1-a, Changhua County ==> asia-east1-c
-zone="asia-east1-a" 
+zone=ENV.fetch('ZONE', "asia-east1-a")
 #machine_type="n1-standard-4 # https://cloud.google.com/compute/docs/machine-types
-machine_type="n1-standard-8"
-vncsecret='passw0rd'
+machine_type=ENV.fetch('MACHINETYPE', "n1-standard-8")
+vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
 Vagrant.configure("2") do |config|
   config.vm.box = "google/gce"
@@ -87,7 +87,12 @@ SCRIPT
       echo "Current user: [`whoami`], deal with GCP..."
       apt-get update -q && apt-get -y upgrade
       apt-get install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
-      apt-get install -y vnc4server moreutils 
+      apt-get install -y sudo vnc4server moreutils 
+
+      sudo echo "Asia/Taipei" | sudo tee /etc/timezone
+      sudo dpkg-reconfigure --frontend noninteractive tzdata
+      sudo timedatectl set-timezone Asia/Taipei
+
       chmod +x /home/john/bbb-test.sh
       # bbb-test.sh -h lingo.xxxedu.tw -n 100
       # ./bbb-test.sh -h synchronize.tnnua.edu.tw -n 2 | ts '[%Y-%m-%d %H:%M:%S]'
