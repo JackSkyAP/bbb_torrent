@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :google do |google, override|
     google.google_project_id = "genuine-airfoil-302302"
     #google.google_json_key_location = "C:/Users/John/.vagrant.d/genuine-airfoil-302302-5b54b4fa2820.json"
-    google.google_json_key_location = "service_account_key.json"
+    google.google_json_key_location = "./service_account_key.json"
     # 1063501002719-compute@developer.gserviceaccount.com
 
     #google.image_family = 'ubuntu-1604-lts'
@@ -22,7 +22,8 @@ Vagrant.configure("2") do |config|
     #google.tags = ['vagrantbox', 'dev']
 
     override.ssh.username = "john"
-    override.ssh.private_key_path = "C:/Users/John/.vagrant.d/insecure_private_key"
+    #override.ssh.private_key_path = "C:/Users/John/.vagrant.d/insecure_private_key"
+    override.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
     #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
     google.zone_config "#{zone}" do |zone1f|
         zone1f.name = "testing-#{zone}"
