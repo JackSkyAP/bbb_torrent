@@ -13,7 +13,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "genuine-airfoil-302302"
-    google.google_json_key_location = "C:/Users/John/.vagrant.d/genuine-airfoil-302302-5b54b4fa2820.json"
+    #google.google_json_key_location = "C:/Users/John/.vagrant.d/genuine-airfoil-302302-5b54b4fa2820.json"
+    google.google_json_key_location = "service_account_key.json"
     # 1063501002719-compute@developer.gserviceaccount.com
 
     #google.image_family = 'ubuntu-1604-lts'
