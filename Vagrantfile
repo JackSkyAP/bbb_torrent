@@ -15,6 +15,8 @@ vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
 puts "GCPPROJECTID: #{GCPPROJECTID}"
 puts "JSONKEYPATH: #{GCPJSONPATHNAME}"
+puts "vm_username: #{vm_username}"
+puts "private_key: #{vm_private_key}"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "google/gce"
@@ -29,9 +31,7 @@ Vagrant.configure("2") do |config|
     #google.tags = ['vagrantbox', 'dev']
 
     override.ssh.username = "#{vm_username}"
-    #override.ssh.private_key_path = "C:/Users/John/.vagrant.d/insecure_private_key"
     override.ssh.private_key_path = "#{vm_private_key}"
-    #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
     google.zone_config "#{zone}" do |zone1f|
         zone1f.name = "testing-#{zone}"
         zone1f.image_family = "ubuntu-1604-lts"
