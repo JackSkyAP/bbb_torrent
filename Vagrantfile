@@ -9,8 +9,8 @@ machine_type=ENV.fetch('MACHINETYPE', "n1-standard-4")
 GCPPROJECTID=ENV.fetch('GCP_PROJECTID', 'GOOGLE_PROJECT_ID')
 GCPJSONPATHNAME=ENV.fetch('GCP_CREDENTIAL', 'GOOGLE_APPLICATION_CREDENTIALS')
 
-vm_username="john"
-vm_private_key="~/.vagrant.d/insecure_private_key"
+vm_username=ENV.fetch('SSH_USERNAME', '')
+vm_private_key=ENV.fetch('SSH_PRIVATE_KEY', "~/.vagrant.d/insecure_private_key")
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
 puts "GCPPROJECTID: #{GCPPROJECTID}"
