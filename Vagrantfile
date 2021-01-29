@@ -6,10 +6,10 @@
 zone=ENV.fetch('ZONE', "asia-east1-a")
 #machine_type="n1-standard-4 # https://cloud.google.com/compute/docs/machine-types
 machine_type=ENV.fetch('MACHINETYPE', "n1-standard-4")
-GCPPROJECTID=ENV.fetch('GCPPROJECTID', '')
-GCPJSONPATHNAME=ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', '')
+GCPPROJECTID=ENV.fetch('GCP_PROJECTID', 'GOOGLE_PROJECT_ID')
+GCPJSONPATHNAME=ENV.fetch('GCP_CREDENTIAL', 'GOOGLE_APPLICATION_CREDENTIALS')
 
-vm_username="skyap"
+vm_username="john"
 vm_private_key="~/.vagrant.d/insecure_private_key"
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
