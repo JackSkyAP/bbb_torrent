@@ -84,7 +84,7 @@ nautilus &
 EOT
     vncserver -kill :1
     vncserver :1
-    chmod +x $HOME/bbb-test.sh
+    chmod +x "/home/#{vm_username}/bbb-test.sh"
     echo "*** VNC-server configuation done & running..."
 SCRIPT
 
@@ -97,11 +97,11 @@ SCRIPT
       apt-get install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
       apt-get install -y sudo vnc4server moreutils 
 
-      sudo echo "Asia/Taipei" | sudo tee /etc/timezone
-      sudo dpkg-reconfigure --frontend noninteractive tzdata
-      sudo timedatectl set-timezone Asia/Taipei
+      #echo "Asia/Taipei" > /etc/timezone
+      sudo ln -snf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
+      dpkg-reconfigure --frontend noninteractive tzdata
 
-      chmod +x $HOME/bbb-test.sh
+      chmod +x "/home/#{vm_username}/bbb-test.sh"
       # bbb-test.sh -h lingo.xxxedu.tw -n 100
       # ./bbb-test.sh -h synchronize.tnnua.edu.tw -n 2 | ts '[%Y-%m-%d %H:%M:%S]'
     SHELL
