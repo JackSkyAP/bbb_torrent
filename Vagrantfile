@@ -20,6 +20,7 @@ puts "private_key: #{vm_private_key}"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "google/gce"
+  config.ssh.insert_key = false
 
   config.vm.provider :google do |google, override|
     google.google_project_id = "#{GCPPROJECTID}"
