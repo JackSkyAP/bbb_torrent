@@ -5,25 +5,32 @@
 # HongKong ==> asia-east2-a, Singapore ==> asia-southeast1-a, Changhua County ==> asia-east1-c
 zone=ENV.fetch('ZONE', "asia-east1-a")
 #machine_type="n1-standard-4 # https://cloud.google.com/compute/docs/machine-types
-machine_type=ENV.fetch('MACHINETYPE', "n1-standard-8")
+machine_type=ENV.fetch('MACHINETYPE', "n1-standard-4")
+GCPPROJECTID=ENV.fetch('GCPPROJECTID', '')
+GCPJSONPATHNAME=ENV.fetch('GOOGLE_APPLICATION_CREDENTIALS', '')
+
+vm_username="skyap"
+vm_private_key="~/.vagrant.d/insecure_private_key"
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
+
+puts "GCPPROJECTID: #{GCPPROJECTID}"
+puts "JSONKEYPATH: #{GCPJSONPATHNAME}"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "google/gce"
 
   config.vm.provider :google do |google, override|
-    google.google_project_id = "genuine-airfoil-302302"
-    #google.google_json_key_location = "C:/Users/John/.vagrant.d/genuine-airfoil-302302-5b54b4fa2820.json"
-    google.google_json_key_location = "./service_account_key.json"
+    google.google_project_id = "#{GCPPROJECTID}"
+    google.google_json_key_location = "#{GCPJSONPATHNAME}"
     # 1063501002719-compute@developer.gserviceaccount.com
 
     #google.image_family = 'ubuntu-1604-lts'
     google.zone = "#{zone}"
     #google.tags = ['vagrantbox', 'dev']
 
-    override.ssh.username = "john"
+    override.ssh.username = "#{vm_username}"
     #override.ssh.private_key_path = "C:/Users/John/.vagrant.d/insecure_private_key"
-    override.ssh.private_key_path = "~/.vagrant.d/insecure_private_key"
+    override.ssh.private_key_path = "#{vm_private_key}"
     #override.ssh.private_key_path = "~/.ssh/google_compute_engine"
     google.zone_config "#{zone}" do |zone1f|
         zone1f.name = "testing-#{zone}"
@@ -32,7 +39,7 @@ Vagrant.configure("2") do |config|
         zone1f.zone = "#{zone}"
         zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
         #zone1f.scopes = ['bigquery', 'monitoring', 'https://www.googleapis.com/auth/compute']
-        zone1f.tags = ['http', 'https', 'bbbudp', 'vnc']
+        zone1f.tags = ['http-server', 'https-server', 'vnc']
     end
   end
 
