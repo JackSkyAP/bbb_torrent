@@ -9,7 +9,7 @@ machine_type=ENV.fetch('MACHINETYPE', "n1-standard-4")
 GCPPROJECTID=ENV.fetch('GCP_PROJECTID', 'GOOGLE_PROJECT_ID')
 GCPJSONPATHNAME=ENV.fetch('GCP_CREDENTIAL', 'GOOGLE_APPLICATION_CREDENTIALS')
 
-vm_username=ENV.fetch('SSH_USERNAME', '')
+vm_username=ENV.fetch('SSH_USERNAME', 'skyap')
 vm_private_key=ENV.fetch('SSH_PRIVATE_KEY', "~/.vagrant.d/insecure_private_key")
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
@@ -20,31 +20,29 @@ puts "private_key: #{vm_private_key}"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "google/gce"
-  config.ssh.insert_key = false
+  #config.ssh.insert_key=false
 
   config.vm.provider :google do |google, override|
-    google.google_project_id = "#{GCPPROJECTID}"
-    google.google_json_key_location = "#{GCPJSONPATHNAME}"
-    # 1063501002719-compute@developer.gserviceaccount.com
 
-    #google.image_family = 'ubuntu-1604-lts'
+    google.google_project_id = "#{GCPPROJECTID}"
+    #google.google_json_key_location = "./radiant-cycle-301903-d88acd716fd4.json"
+    google.google_json_key_location = ENV.fetch('GCP_CREDENTIAL', "./radiant-cycle-301903-d88acd716fd4.json")
+
+    google.name = "testing-#{zone}"
+    google.image_family = 'ubuntu-1604-lts'
+    google.machine_type = "#{machine_type}"
     google.zone = "#{zone}"
-    #google.tags = ['vagrantbox', 'dev']
+    #google.metadata = {'custom' => 'metadata', 'username' => "#{vm_username", 'privage_key' => "#{vm_private_key}" }
+    google.metadata = {'custom' => 'metadata', 'username' => "#{vm_username}", 'privage_key' => "#{vm_private_key}" }
+    #google.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
+    google.tags = ['http-server', 'https-server', 'vnc']
 
     override.ssh.username = "#{vm_username}"
     override.ssh.private_key_path = "#{vm_private_key}"
-    google.zone_config "#{zone}" do |zone1f|
-        zone1f.name = "testing-#{zone}"
-        zone1f.image_family = "ubuntu-1604-lts"
-        zone1f.machine_type = "#{machine_type}"
-        zone1f.zone = "#{zone}"
-        zone1f.metadata = {'custom' => 'metadata', 'testing' => 'foobarbaz'}
-        #zone1f.scopes = ['bigquery', 'monitoring', 'https://www.googleapis.com/auth/compute']
-        zone1f.tags = ['http-server', 'https-server', 'vnc']
-    end
   end
 
   $PROVISION_DEBIAN = <<SCRIPT
+    echo "Current user: [`whoami`], Provision_Debian..."
     uname=$(uname -a)
     ver=$(cat /etc/debian_version)
     echo "== BEGIN: vagrant provisioning on '${uname}'"
