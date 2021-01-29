@@ -85,7 +85,7 @@ nautilus &
 EOT
     vncserver -kill :1
     vncserver :1
-    chmod +x /home/john/bbb-test.sh
+    chmod +x $HOME/bbb-test.sh
     echo "*** VNC-server configuation done & running..."
 SCRIPT
 
@@ -102,7 +102,7 @@ SCRIPT
       sudo dpkg-reconfigure --frontend noninteractive tzdata
       sudo timedatectl set-timezone Asia/Taipei
 
-      chmod +x /home/john/bbb-test.sh
+      chmod +x $HOME/bbb-test.sh
       # bbb-test.sh -h lingo.xxxedu.tw -n 100
       # ./bbb-test.sh -h synchronize.tnnua.edu.tw -n 2 | ts '[%Y-%m-%d %H:%M:%S]'
     SHELL
