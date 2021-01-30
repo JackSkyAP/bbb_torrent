@@ -13,8 +13,11 @@ vm_username=ENV.fetch('SSH_USERNAME', 'skyap')
 vm_private_key=ENV.fetch('SSH_PRIVATE_KEY', "~/.vagrant.d/insecure_private_key")
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
+dry_run=ENV.fetch('DRYRUN', false)
+
 puts "GCPPROJECTID: #{GCPPROJECTID}"
 puts "JSONKEYPATH: #{GCPJSONPATHNAME}"
+puts "dry_run: #{dry_run.inspect}"
 puts "vm_username: #{vm_username}"
 puts "private_key: #{vm_private_key}"
 
@@ -94,18 +97,22 @@ SCRIPT
     loadtest2.vm.provision :shell, inline: <<-SHELL
       echo "Current user: [`whoami`], deal with GCP..."
       apt-get update -q && apt-get -y upgrade
-      apt-get install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
-      apt-get install -y sudo vnc4server moreutils 
-
       #echo "Asia/Taipei" > /etc/timezone
       sudo ln -snf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
       dpkg-reconfigure --frontend noninteractive tzdata
-
-      chmod +x "/home/#{vm_username}/bbb-test.sh"
-      # bbb-test.sh -h lingo.xxxedu.tw -n 100
-      # ./bbb-test.sh -h synchronize.tnnua.edu.tw -n 2 | ts '[%Y-%m-%d %H:%M:%S]'
     SHELL
-    loadtest2.vm.provision :shell, privileged: false, inline: $vnc_up_script
+    if dry_run    
+      loadtest2.vm.provision :shell, inline: <<-SHELL
+        echo "Current user: [`whoami`], deal with Desktop for VNC..."
+        apt-get install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
+        apt-get install -y sudo vnc4server moreutils 
+
+        chmod +x "/home/#{vm_username}/bbb-test.sh"
+        # bbb-test.sh -h lingo.xxxedu.tw -n 100
+        # ./bbb-test.sh -h synchronize.tnnua.edu.tw -n 2 | ts '[%Y-%m-%d %H:%M:%S]'
+      SHELL
+      loadtest2.vm.provision :shell, privileged: false, inline: $vnc_up_script
+    end
     loadtest2.vm.provision :shell, privileged: true, inline: $PROVISION_DEBIAN
   end
 
