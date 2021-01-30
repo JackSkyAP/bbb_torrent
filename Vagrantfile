@@ -13,7 +13,8 @@ vm_username=ENV.fetch('SSH_USERNAME', 'skyap')
 vm_private_key=ENV.fetch('SSH_PRIVATE_KEY', "~/.vagrant.d/insecure_private_key")
 vncsecret=ENV.fetch('VNNCSECRET', "passw0rd")
 
-dry_run=ENV.fetch('DRYRUN', false)
+DRYRUN=ENV.fetch('DRYRUN', 'false')
+dry_run=DRYRUN.to_s.downcase == "true"
 
 puts "GCPPROJECTID: #{GCPPROJECTID}"
 puts "JSONKEYPATH: #{GCPJSONPATHNAME}"
