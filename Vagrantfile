@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
 
     google.google_project_id = "#{GCPPROJECTID}"
     #google.google_json_key_location = "./radiant-cycle-301903-d88acd716fd4.json"
-    google.google_json_key_location = ENV.fetch('GCP_CREDENTIAL', "./radiant-cycle-301903-d88acd716fd4.json")
+    google.google_json_key_location = ENV.fetch('GCP_CREDENTIAL', "./google_json_key.json")
 
     google.name = "testing-#{zone}"
     google.image_family = 'ubuntu-1604-lts'
