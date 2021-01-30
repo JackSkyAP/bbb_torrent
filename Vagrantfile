@@ -101,7 +101,7 @@ SCRIPT
       sudo ln -snf /usr/share/zoneinfo/Asia/Taipei /etc/localtime
       dpkg-reconfigure --frontend noninteractive tzdata
     SHELL
-    if dry_run    
+    if !dry_run    
       loadtest2.vm.provision :shell, inline: <<-SHELL
         echo "Current user: [`whoami`], deal with Desktop for VNC..."
         apt-get install -y ubuntu-desktop gnome-panel gnome-settings-daemon metacity nautilus gnome-terminal
